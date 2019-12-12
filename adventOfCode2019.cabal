@@ -68,6 +68,7 @@ library
                        , vector ^>= 0.12
                        , mtl ^>= 2.2
                        , containers ^>= 0.6
+                       , diffarray ^>= 0.1
 
 
   -- Directories containing source files.
@@ -75,6 +76,8 @@ library
 
   -- Base language which the package is written in.
   default-language:    Haskell2010
+
+  ghc-options:         -Wno-tabs
 
 
 executable adventOfCode2019
@@ -95,6 +98,7 @@ executable adventOfCode2019
 
   -- Base language which the package is written in.
   default-language:    Haskell2010
+  ghc-options:         -Wno-tabs
 
 
 test-suite adventOfCode2019-test
@@ -112,4 +116,5 @@ test-suite adventOfCode2019-test
 
   -- Test dependencies.
   build-depends:       base ^>=4.12.0.0
+  ghc-options:         -Wno-tabs
 
