@@ -8,21 +8,18 @@
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE MultiWayIf #-}
 
 module Day02 (printResult) where
 
 import qualified Data.Text as T
 import qualified Data.Text.IO as TIO
-import qualified Data.List as DL
 import qualified Data.Attoparsec.Text as AP
 import qualified Data.Array.MArray as AM
 import qualified Data.Array.IArray as AI
 import qualified Data.Array.Unboxed as AU
-import qualified Data.STRef as DSTR
 import qualified Data.Array.ST as AST
 import qualified Control.Monad.ST as CMST
-import qualified Control.Monad as CM
-import Data.Functor.Foldable
 import Control.Lens
 
 newtype MachineState = MachineState { getArray :: AU.UArray Int Int } deriving Show
@@ -39,12 +36,12 @@ multOpCode = 2
 haltOpCode :: Int
 haltOpCode = 99
 
-input :: T.Text
+--input :: T.Text
 --input = "1,9,10,3,2,3,11,0,99,30,40,50"
 --input = "1,0,0,0,99"
 --input = "2,3,0,3,99"
 --input = "2,4,4,5,99,0"
-input = "1,1,1,4,99,5,6,0,99"
+--input = "1,1,1,4,99,5,6,0,99"
 
 run :: Int -> Int -> MachineState -> MachineState
 run n v (MachineState ua) = MachineState $ CMST.runST stProg
@@ -62,8 +59,8 @@ run n v (MachineState ua) = MachineState $ CMST.runST stProg
 	loop mem maxIp ip 
 		| ip > maxIp = return ()
 		| otherwise = do 
-			op <- AM.readArray mem ip
-			if op == haltOpCode
+			opCode <- AM.readArray mem ip
+			if opCode == haltOpCode
 				then return ()
 				else do
 					pos1 <- AM.readArray mem (ip + 1)
@@ -71,15 +68,13 @@ run n v (MachineState ua) = MachineState $ CMST.runST stProg
 					resPos <- AM.readArray mem (ip + 3)
 					arg1 <- AM.readArray mem pos1
 					arg2 <- AM.readArray mem pos2
-					if op == plusOpCode
-						then do
+					if	| opCode == plusOpCode -> do
 							AM.writeArray mem resPos (arg1 + arg2)
 							loop mem maxIp (ip + 4)
-						else if op == multOpCode
-							then do
-								AM.writeArray mem resPos (arg1 * arg2)
-								loop mem maxIp (ip + 4)
-							else return ()
+						| opCode == multOpCode -> do
+							AM.writeArray mem resPos (arg1 * arg2)
+							loop mem maxIp (ip + 4)
+						| otherwise -> return ()
 
 data Result = Result
 	{ _noun :: Int
