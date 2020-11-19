@@ -1,4 +1,4 @@
-{ mkDerivation, array, attoparsec, base, doctest, lens, mtl
+{ mkDerivation, array, attoparsec, base, doctest, lens, linear, mtl
 , recursion-schemes, stdenv, text, vector
 }:
 mkDerivation {
@@ -8,12 +8,10 @@ mkDerivation {
   isLibrary = true;
   isExecutable = true;
   libraryHaskellDepends = [
-    array attoparsec base doctest lens mtl recursion-schemes text
-    vector
+    array attoparsec base doctest lens linear mtl recursion-schemes
+    text vector
   ];
-  executableHaskellDepends = [
-    array attoparsec base lens mtl text vector
-  ];
+  executableHaskellDepends = [ base ];
   testHaskellDepends = [ base ];
   description = "Advent of code 2019";
   license = stdenv.lib.licenses.bsd3;

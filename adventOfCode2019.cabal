@@ -66,6 +66,7 @@ library
                        , vector ^>=0.12.1.2
                        , mtl ^>=2.2.2
                        , recursion-schemes ^>= 5.1
+                       , linear ^>= 1.21
                        , doctest ^>= 0.16
 
   -- Directories containing source files.
@@ -73,6 +74,8 @@ library
 
   -- Base language which the package is written in.
   default-language:    Haskell2010
+
+  ghc-options: -Wno-tabs
 
 
 executable adventOfCode2019
@@ -94,6 +97,7 @@ executable adventOfCode2019
 
   -- Base language which the package is written in.
   default-language:    Haskell2010
+  ghc-options: -Wno-tabs
 
 
 test-suite adventOfCode2019-test
@@ -111,4 +115,5 @@ test-suite adventOfCode2019-test
 
   -- Test dependencies.
   build-depends:       base ^>=4.13.0.0
+  ghc-options: -Wno-tabs
 
